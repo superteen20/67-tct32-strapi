@@ -861,7 +861,7 @@ export interface ApiStudentStudent extends Schema.CollectionType {
       'manyToMany',
       'api::class-room.class-room'
     >;
-    PhoneNumber: Attribute.String & Attribute.Required;
+    moblie: Attribute.String & Attribute.Required;
     email: Attribute.Email & Attribute.Required & Attribute.Unique;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;

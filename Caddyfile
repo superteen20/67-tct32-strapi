@@ -1,0 +1,7 @@
+myapp.local {
+    reverse_proxy localhost:8080
+}
+
+dev.myapp.local {
+    reverse_proxy localhost:1337    
+}

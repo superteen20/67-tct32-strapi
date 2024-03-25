@@ -22,7 +22,7 @@
       "target": "api::class-room.class-room",
       "mappedBy": "students"
     },
-    "PhoneNumber": {
+    "moblie": {
       "type": "string",
       "required": true,
       "minlength": 10,

@@ -1,12 +1,15 @@
 version: '3'
 
-services:
-  app:
-    build: .
-    image: chayutpong/app:1.0.0
-    container_name: TCT_32_APP
+services:  
+  app: # Define the service name
+    build: . # Use the Dockerfile in the current directory  
+    image: chayutpong/app:1.1.0 # Define the image name
+    container_name: TCT_32_APP # Define the container name
     ports:
-      - ${APP_PORTS}
+      - ${APP_PORTS} # Define the ports mapping
+    depends_on:
+      - db
+      - proxy
     environment:
       - DATABASE_CLIENT=${DATABASE_CLIENT}
       - DATABASE_HOST=${DATABASE_HOST}
@@ -15,17 +18,30 @@ services:
       - DATABASE_USERNAME=${DATABASE_USERNAME}
       - DATABASE_PASSWORD=${DATABASE_PASSWORD}
       - DATABASE_SSL=${DATABASE_SSL}
-  networks:
-    - my-network
-  restart: always
-  volums:
-    - ./database/data:/var/lib/postgresql/data
+    networks:
+      - my-network
+    restart: always
+    volumes:
+      - ./database/data:/var/lib/postgresql/data
+
+  proxy:
+    container_name: tct-web-server
+    image: caddy:latest
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+
   db:
     image: postgres:latest
     container_name: TCT_32_DB
     ports:
-       - ${DB_PORTS}
+      - ${DB_PORTS}
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB}
+networks:                            # Define networks section
+  my-network:                        # Define the network
+    driver: bridge                   # You can specify the driver if needed
